@@ -177,7 +177,7 @@ with st.sidebar:
     # Add dropdown for code files selection under Task 3
     if task == "Task 3: Code Files & Documentation":
         codefile = st.selectbox("Select Code File", [
-            "combined_tsk1_tsk2_with_ui_2.py",
+            "combined_tsk1_tsk2_with_ui-2.py",
             "task1.py",
             "task2.py",
             "Documentation.pdf"
@@ -287,20 +287,36 @@ elif task == "Task 3: Code Files & Documentation":
         try:
             file_path = os.path.join(os.getcwd(), codefile)
             if os.path.exists(file_path):
-                with open(file_path, "r") as file:
-                    code = file.read()
-                    # If it's a python file, display as Python code
-                    if codefile.endswith('.py'):
-                        st.code(code, language='python')
-                    # If it's a pdf, display it as a download option
-                    elif codefile.endswith('.pdf'):
-                        with open(file_path, "rb") as pdf_file:
-                            st.download_button(
-                                label="📥 Download Documentation",
-                                data=pdf_file,
-                                file_name="documentation.pdf",
-                                mime="application/pdf"
-                            )
+                if codefile.endswith('.pdf'):
+                    # Display PDF with embedded viewer and download option
+                    with open(file_path, "rb") as f:
+                        base64_pdf = base64.b64encode(f.read()).decode('utf-8')
+                        
+                        # PDF Viewer
+                        pdf_display = f"""
+                        <iframe src="data:application/pdf;base64,{base64_pdf}" 
+                                width="100%" 
+                                height="800px" 
+                                style="border:1px solid #EEE;">
+                        </iframe>
+                        """
+                        st.markdown(pdf_display, unsafe_allow_html=True)
+                        
+                        # Download button
+                        st.download_button(
+                            label="📥 Download Full Documentation",
+                            data=f,
+                            file_name=codefile,
+                            mime="application/pdf"
+                        )
+                else:
+                    # Handle text/code files
+                    with open(file_path, "r", encoding='utf-8') as file:
+                        code = file.read()
+                        if codefile.endswith('.py'):
+                            st.code(code, language='python')
+                        else:
+                            st.text(code)
             else:
                 st.error("File not found. Please check the file name or path.")
         except Exception as e:
