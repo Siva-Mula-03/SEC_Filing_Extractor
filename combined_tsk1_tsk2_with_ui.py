@@ -197,7 +197,7 @@ if task == "Task 1: 10-Q Filings":
     with col1:
         year = st.number_input("Enter Year", min_value=1995, max_value=2025, value=2024)
     with col2:
-        quarters = st.multiselect("Select Quarters", [1, 2, 3, 4], default=[1])
+        quarters = st.multiselect("Select Quarters", [1, 2, 3, 4], default=[])
 
     if st.button("Fetch Filings"):
         with st.spinner("Fetching filings..."):
