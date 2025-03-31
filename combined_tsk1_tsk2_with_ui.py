@@ -1,3 +1,4 @@
+
 import streamlit as st
 import requests
 import pandas as pd
@@ -5,6 +6,7 @@ from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 import re
 import os
+import base64
 
 # SEC Base URL
 BASE_URL = "https://www.sec.gov"
