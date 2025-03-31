@@ -6,4 +6,4 @@ nltk
 openai
 selenium
 webdriver_manager
-base64
+
