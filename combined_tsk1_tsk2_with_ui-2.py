@@ -283,25 +283,28 @@ elif task == "Task 2: URL Text Extraction":
 elif task == "Task 3: Code Files & Documentation":
     st.header("📄 Code Files and Documentation")
 
-    # Checking if the codefile dropdown is selected
     if codefile:
         try:
             file_path = os.path.join(os.getcwd(), codefile)
             if os.path.exists(file_path):
-                with open(file_path, "r") as file:
-                    code = file.read()
-                    # If it's a python file, display as Python code
-                    if codefile.endswith('.py'):
-                        st.code(code, language='python')
-                    # If it's a pdf, display it as a download option
-                    elif codefile.endswith('.pdf'):
-                        with open(file_path, "rb") as pdf_file:
-                            st.download_button(
-                                label="📥 Download Documentation",
-                                data=pdf_file,
-                                file_name="documentation.pdf",
-                                mime="application/pdf"
-                            )
+                if codefile.endswith('.pdf'):
+                    # PDF Download Only (No Viewer)
+                    with open(file_path, "rb") as f:
+                        st.download_button(
+                            label="📥 Download Documentation",
+                            data=f,
+                            file_name=codefile,
+                            mime="application/pdf",
+                            help="Click to download the PDF file"
+                        )
+                else:
+                    # Handle text/code files (unchanged)
+                    with open(file_path, "r", encoding='utf-8') as file:
+                        code = file.read()
+                        if codefile.endswith('.py'):
+                            st.code(code, language='python')
+                        else:
+                            st.text(code)
             else:
                 st.error("File not found. Please check the file name or path.")
         except Exception as e:
