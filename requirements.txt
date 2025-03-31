@@ -1,0 +1,8 @@
+requests
+beautifulsoup4
+pandas
+streamlit
+nltk
+openai
+selenium
+webdriver_manager
